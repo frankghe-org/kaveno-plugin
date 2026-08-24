@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "kaveno": {
+      "type": "http",
+      "url": "https://kaveno.aigent.biz/mcp",
+      "headers": {
+        "Authorization": "Bearer ${KAVENO_MCP_TOKEN}"
+      }
+    }
+  }
+}

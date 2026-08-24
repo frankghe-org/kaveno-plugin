@@ -1,0 +1,21 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "kaveno",
+  "description": "Kaveno — build the source map your marketing reads from, and watch it refuse what has no business being in it. Skills over an MCP server.",
+  "owner": {
+    "name": "Frank Ghenassia"
+  },
+  "plugins": [
+    {
+      "name": "kaveno",
+      "source": "./",
+      "category": "productivity",
+      "tags": [
+        "marketing",
+        "b2b",
+        "mcp",
+        "source-map"
+      ]
+    }
+  ]
+}

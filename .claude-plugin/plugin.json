@@ -1,0 +1,18 @@
+{
+  "name": "kaveno",
+  "version": "0.1.0",
+  "description": "A marketing and communication assistant for a small B2B operator. Finds what is worth saying, drafts it, and says who to talk to — and never contacts anyone itself.",
+  "author": {
+    "name": "Frank Ghenassia"
+  },
+  "repository": "https://github.com/frankghe-org/kaveno",
+  "homepage": "https://github.com/frankghe-org/kaveno/tree/main/docs/guides",
+  "keywords": [
+    "marketing",
+    "b2b",
+    "mcp",
+    "postgres"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json"
+}
