@@ -40,9 +40,19 @@ path. The token is a row with a stated expiry that can be withdrawn on the next
 call, so it is not a secret in a config file and it is not in this repository.
 Whoever administers your Kaveno server issues it.
 
-If `claude mcp list` reports `Missing environment variables: KAVENO_MCP_TOKEN`,
-the variable did not reach the environment Claude was started from — export it and
-start a new session, since a session reads it once, at launch.
+**`claude mcp list` says `✔ Connected` even with no token, and that is not a
+check you can rely on.** The connection is established before any credential is
+looked at — Kaveno checks it on each request instead. So a missing or expired
+token shows up not there but on the first thing you ask, as:
+
+```
+the bearer token does not resolve to an operator
+```
+
+If you see that, the usual cause is that `KAVENO_MCP_TOKEN` never reached the
+environment Claude was started from. Export it and start a new session — a session
+reads it once, at launch. If it is definitely set, the credential itself has
+expired or been withdrawn, and whoever administers your server issues a new one.
 
 ## Using it
 
