@@ -5,8 +5,9 @@ finds what is worth saying, drafts it, and says who to talk to — and it never
 contacts anyone itself.
 
 This repository holds the **procedure layer**: the skills Claude follows on your
-behalf, and the connection to the Kaveno server. It is generated from the
-[Kaveno source repository](https://github.com/frankghe-org/kaveno) and should not be edited here.
+behalf, and the connection to the Kaveno server. It is generated from Kaveno's
+source repository, which is private — so everything you need is here, and nothing
+here should be edited, since the next publish overwrites it.
 
 ## Install
 
