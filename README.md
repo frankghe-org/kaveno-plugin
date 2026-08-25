@@ -14,20 +14,24 @@ here should be edited, since the next publish overwrites it.
 ```bash
 claude plugin marketplace add frankghe-org/kaveno-plugin
 claude plugin install kaveno@kaveno
+claude mcp add --scope user --transport http kaveno https://kaveno.aigent.biz/mcp   --header "Authorization: Bearer <your token>"
 ```
 
-Then put your credential in the environment that starts Claude — your shell
-profile is the usual place:
+Then start a new Claude session.
 
-```bash
-export KAVENO_MCP_TOKEN=<your token>
-```
+**The third command is the one that matters, and storing the token there rather
+than in the environment is deliberate.** It writes the credential into Claude's
+own configuration, so it survives a new shell, a restart, a desktop launch and a
+container — all places an environment variable quietly fails to reach. It also
+gives the server the plain name `kaveno`, so its tools appear as
+`mcp__kaveno__*`.
 
-Start a new Claude session. `claude mcp list` should show:
-
-```
-kaveno: https://kaveno.aigent.biz/mcp (HTTP) - ✔ Connected
-```
+The plugin also ships a connection that reads `KAVENO_MCP_TOKEN` from the
+environment. If you would rather work that way, `export KAVENO_MCP_TOKEN=…` in
+whatever starts Claude and skip the third command — but export it somewhere a
+*new* session will see, because a running one has already read its environment.
+The two do not fight: a `kaveno` you add yourself takes precedence over the one
+the plugin ships.
 
 There is nothing else to install: no checkout, no Docker, no database. The server
 holds your map and enforces the rules; these skills are how Claude knows what to
@@ -41,9 +45,10 @@ path. The token is a row with a stated expiry that can be withdrawn on the next
 call, so it is not a secret in a config file and it is not in this repository.
 Whoever administers your Kaveno server issues it.
 
-**`claude mcp list` says `✔ Connected` even with no token, and that is not a
-check you can rely on.** The connection is established before any credential is
-looked at — Kaveno checks it on each request instead. So a missing or expired
+**`claude mcp list` says `✔ Connected` even with no token at all, and that is not
+a check you can rely on.** Measured with the credential correct, absent and empty
+— all three report Connected. The connection is established before any credential
+is looked at; Kaveno checks it on each request instead. So a missing or expired
 token shows up not there but on the first thing you ask, as:
 
 ```
