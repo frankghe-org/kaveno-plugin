@@ -1,6 +1,6 @@
 {
   "name": "kaveno",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A marketing and communication assistant for a small B2B operator. Finds what is worth saying, drafts it, and says who to talk to \u2014 and never contacts anyone itself.",
   "author": {
     "name": "Frank Ghenassia"
@@ -13,5 +13,6 @@
     "mcp",
     "postgres"
   ],
-  "skills": "./skills/"
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json"
 }
