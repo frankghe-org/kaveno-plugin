@@ -1,8 +1,6 @@
 {
-  "mcpServers": {
-    "kaveno": {
-      "type": "http",
-      "url": "https://kaveno.aigent.biz/mcp"
-    }
+  "kaveno": {
+    "type": "http",
+    "url": "https://kaveno.aigent.biz/mcp"
   }
 }
