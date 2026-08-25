@@ -64,8 +64,7 @@ skills are missing. When they are loaded, none of that needs explaining.
 check whether it is the server or your own network — this needs nothing installed:
 
 ```bash
-curl -s -o /dev/null -w '%{http_code}
-'   -H 'Accept: application/json, text/event-stream' https://kaveno.aigent.biz/mcp
+curl -s -o /dev/null -w '%{http_code}\n'   -H 'Accept: application/json, text/event-stream' https://kaveno.aigent.biz/mcp
 ```
 
 `400` means the server is up and answering (a request carrying no MCP session
