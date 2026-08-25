@@ -1,5 +1,5 @@
 ---
-name: kaveno-scan
+name: scan
 description: Sweep the sources that only exist inside the operator's logged-in session — Facebook groups, LinkedIn groups, members-only forums — and record what is worth keeping as derived items. Use when the operator asks to check the groups, sweep a community, read what is happening in a group the server cannot reach, catch up on a group, or when the daily view is thin because the logged-in sources have gone stale.
 ---
 
@@ -127,7 +127,7 @@ Being logged in changes what is *visible*. It changes nothing about what is *per
 
 - Gate 1 is unchanged. A person seen in a group is not a contact.
 - The group's own rules are unchanged. Reading a group is not permission to post in it —
-  `kaveno-publish` checks the recorded self-promotion rule, and a group whose rules were
+  the `publish` skill checks the recorded self-promotion rule, and a group whose rules were
   never read is not offered as a target at all.
 - The no-send bright line is unchanged. Nothing here messages anyone.
 

@@ -1,5 +1,5 @@
 ---
-name: kaveno-publish
+name: publish
 description: Run the daily publishing decision — present what is worth publishing today, draft the post in-language and in voice, and assist the operator into the composer. Use when publishing a post, posting to a discussion group or a forum, drafting a post for the operator's own feed, asking what to publish today, or working through the day's items and angles.
 ---
 
@@ -116,9 +116,9 @@ What the tools record, and why it matters: `select` sets the chosen angle to sel
 
 ## Hand-off
 
-- **The input gate blocked something** → `kaveno-onboard`, naming the thin dimension.
-- **A group has no recorded self-promotion rules, or a source has gone quiet** → `kaveno-sources`.
-- **Weekly** → `kaveno-retro`, which reads which drafts were rewritten heavily and tells you which part of the brief is weak. Heavy rewriting three sessions running is a brief problem, not a drafting problem, and the answer is to fix the brief and build nothing new.
+- **The input gate blocked something** → the `onboard` skill, naming the thin dimension.
+- **A group has no recorded self-promotion rules, or a source has gone quiet** → the `sources` skill.
+- **Weekly** → the `retro` skill, which reads which drafts were rewritten heavily and tells you which part of the brief is weak. Heavy rewriting three sessions running is a brief problem, not a drafting problem, and the answer is to fix the brief and build nothing new.
 
 Remember the division of labour: **you make the choice and the draft good; the server makes the gate real.** The tools return their gate status and refuse the blocked objectives whether or not this skill was loaded.
 

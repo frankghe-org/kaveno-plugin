@@ -1,5 +1,5 @@
 ---
-name: kaveno-sources
+name: sources
 description: Find, judge and record the sources and groups Kaveno reads — trade media, associations, regulators, forums, communities and statistics, per segment and market. Use when setting up the source map for a new product, segment or market, when extending or filling gaps in an existing one, when adding a group, forum or feed, when a group's self-promotion rules need capturing, when the daily view is thin or repetitive, or when a source has stopped yielding.
 ---
 
@@ -163,7 +163,7 @@ Sources rot quietly, which is worse than rotting loudly. Each run, take the stal
 
 - **No yield since a date** — check whether the site changed shape (extraction problem, fixable) or went quiet (source problem, retire it). These look identical in the digest and have opposite remedies.
 - **Fetch failing** — set it back to `access_method = 'manual'`. That is how a source is retired; **nothing deletes a `source` row**, and its history stays attached.
-- **A group that has not been read in weeks** — that is not a dead source, it is an unrun sweep. Hand to `kaveno-scan` rather than retiring anything.
+- **A group that has not been read in weeks** — that is not a dead source, it is an unrun sweep. Hand to the `scan` skill rather than retiring anything.
 - **Re-verify liveness on the platforms that permit it**, forums and Discord especially, since those are the ones where a number can be checked rather than assumed.
 
 Say what you retired and why, in one line each. A retired source the operator disagrees with is a thirty-second correction; a silently retired one is a gap he finds in three months.
@@ -183,9 +183,9 @@ Say what you retired and why, in one line each. A retired source the operator di
 
 ## 9. Hand-off
 
-- **`kaveno-onboard`** — if the brief cannot distinguish the segments, you cannot judge relevance and neither can he. Stop and say so; a source map built against a vague segment is worse than none, because it looks like coverage.
-- **`kaveno-scan`** — every `access_path = 'operator_session'` source you record is work for that skill, and a group nobody sweeps is a row, not a source.
-- **`kaveno-react`** — when a reply is blocked on a group whose rules were never read (`rules_read: false`), this is the skill that unblocks it, and reading one group's three rules is five minutes.
-- **`kaveno-publish`** — a source with `purpose` of `publish` or `both` is a place to post, not only to read. Say which of the new rows are which.
+- **the `onboard` skill** — if the brief cannot distinguish the segments, you cannot judge relevance and neither can he. Stop and say so; a source map built against a vague segment is worse than none, because it looks like coverage.
+- **the `scan` skill** — every `access_path = 'operator_session'` source you record is work for that skill, and a group nobody sweeps is a row, not a source.
+- **the `react` skill** — when a reply is blocked on a group whose rules were never read (`rules_read: false`), this is the skill that unblocks it, and reading one group's three rules is five minutes.
+- **the `publish` skill** — a source with `purpose` of `publish` or `both` is a place to post, not only to read. Say which of the new rows are which.
 
 The division of labour is unchanged: **you judge the source; the server makes the constraint real.** A source stays unfetched until `robots_ok` is true whether or not this skill was loaded, and a group with unread rules blocks a drafted reply whether or not anyone remembers why.

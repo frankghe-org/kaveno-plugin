@@ -1,5 +1,5 @@
 ---
-name: kaveno-onboard
+name: onboard
 description: Build or repair the Kaveno market brief — the positioning, vocabulary, pain points, proof, competitors, tone rules and fit criteria that every piece of Kaveno's output is generated from. Use when setting up a new product or segment in Kaveno, when the brief scores below threshold, when Kaveno reports that an objective is blocked for missing input, or when the operator says the drafts feel generic, off-voice, or like they were written by someone outside the industry.
 ---
 
@@ -80,6 +80,6 @@ Score each dimension **present/absent**, then **specific/generic**. Report the r
 
 ## 4. Finishing
 
-Write the brief file, then say in one short paragraph: what passed, what is thin, what is blocked, and what to do next. Hand off to `kaveno-sources` if the brief passes — the source map is the next thing that gates output quality.
+Write the brief file, then say in one short paragraph: what passed, what is thin, what is blocked, and what to do next. Hand off to the `sources` skill if the brief passes — the source map is the next thing that gates output quality.
 
 Remember the division of labour: **you make the brief good; the server makes the gate real.** Kaveno's tools will refuse the blocked objectives whether or not this skill was used.

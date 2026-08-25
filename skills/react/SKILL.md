@@ -1,5 +1,5 @@
 ---
-name: kaveno-react
+name: react
 description: Draft a public reply to a specific post or thread — a question in a forum, a group thread, a comment under someone else's post — judged against that group's recorded rules and the market brief, with affiliation disclosed where the product is named. Use when the operator says someone asked something relevant, pastes a thread or a post URL, wants to answer a question in a forum or a Facebook group, wants to comment on a thread, or asks whether a thread is worth replying to.
 ---
 
@@ -9,7 +9,7 @@ A reply is public, contextual and one-to-many-who-are-reading, and it is **the h
 
 The operator is a technical founder running Fixeet (construction defect management) alone, in Hebrew, among Israeli architects and renovation contractors. He is a member of these groups before he is a vendor in them, and everything below exists to keep that true.
 
-**Objective: O1 primary, O3 secondary.** The reply builds his standing; whoever engages becomes a candidate for `kaveno-reachout`. Record it as a community answer with both objectives set — reporting counts the primary.
+**Objective: O1 primary, O3 secondary.** The reply builds his standing; whoever engages becomes a candidate for the `reachout` skill. Record it as a community answer with both objectives set — reporting counts the primary.
 
 ## 1. Should this be replied to at all
 
@@ -18,7 +18,7 @@ Three tests, in order. Fail any one and stop; say which one and why.
 ### Test 1 — is the question answerable, by him, well
 Read what was actually asked. **The most common failure of this skill is answering the question the operator wishes had been asked** — the thread is about scheduling subcontractors, the draft is about documenting defects, and the group can tell. If the thread is about something Fixeet does not help with, the reply is still a useful one about the thing asked, or there is no reply. Both are acceptable outcomes; a redirected answer is not.
 
-Then check the brief. Replying in a group of practitioners with thin vocabulary is **worse than not replying** — a generic post scrolls past, a generic *reply* is read closely by the person who asked and marks the writer as an outsider permanently. Apply the input gate from `kaveno-onboard` §3, per segment:
+Then check the brief. Replying in a group of practitioners with thin vocabulary is **worse than not replying** — a generic post scrolls past, a generic *reply* is read closely by the person who asked and marks the writer as an outsider permanently. Apply the input gate from the `onboard` skill §3, per segment:
 
 | If | Then |
 |---|---|
@@ -29,7 +29,7 @@ Then check the brief. Replying in a group of practitioners with thin vocabulary 
 ### Test 2 — does the group allow it
 The governing fact is `group.self_promo_policy`, read once by a human and recorded verbatim, with `rules_url` and `rules_read_at` as evidence.
 
-- **`unknown` → do not draft.** Say which group it is and that its rules need reading once, by him, and that it takes five minutes. Hand to `kaveno-sources` to capture it. Guessing a group's rules from its name is how the account is lost.
+- **`unknown` → do not draft.** Say which group it is and that its rules need reading once, by him, and that it takes five minutes. Hand to the `sources` skill to capture it. Guessing a group's rules from its name is how the account is lost.
 - **Vendor participation forbidden → refuse, and quote the rule.** Not "this group is strict" — the clause, so he can disagree with the reading if it is wrong.
 - **Promotion restricted to a weekly thread, or permitted only when asked → draft, and say which constraint shaped the draft.**
 
@@ -91,9 +91,9 @@ Say what was recorded in one line. Do not make the operator do bookkeeping for t
 
 ## 6. Hand-off
 
-- `kaveno-sources` — when a group's `self_promo_policy` is `unknown` and the reply is blocked on it.
-- `kaveno-onboard` — when the input gate fails, or when the operator's corrections to a draft reveal vocabulary the brief did not have. Replies are the best source of brief repair in the product: he is writing in his own voice, under pressure, to people who would notice if he got it wrong.
-- `kaveno-reachout` — for anyone who engaged with the reply. That is the warm path, and it is the reason to bother recording the thread at all.
+- the `sources` skill — when a group's `self_promo_policy` is `unknown` and the reply is blocked on it.
+- the `onboard` skill — when the input gate fails, or when the operator's corrections to a draft reveal vocabulary the brief did not have. Replies are the best source of brief repair in the product: he is writing in his own voice, under pressure, to people who would notice if he got it wrong.
+- the `reachout` skill — for anyone who engaged with the reply. That is the warm path, and it is the reason to bother recording the thread at all.
 
 The division of labour is unchanged: **you make the reply good; the server makes the gates real.** Kaveno's tools enforce provenance, suppression and the brief-completeness block whether or not this skill was loaded.
 

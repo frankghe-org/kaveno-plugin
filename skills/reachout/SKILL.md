@@ -1,5 +1,5 @@
 ---
-name: kaveno-reachout
+name: reachout
 description: Run the weekly Kaveno contact review and prepare a private first message to one specific professional — reading the evidence, judging fit, shaping the qualifying question, and driving the assisted send up to the point of the operator's click. Use when the operator asks who is worth contacting this week, wants to reach out to or contact a prospect, wants to send a DM or private message to someone they saw posting, or is making first contact with an individual professional.
 ---
 
@@ -110,6 +110,6 @@ The operator reads it and presses send.
 
 Close the session with: how many were reviewed, how many were prepared, how many were skipped and why, and anything that failed to a hand-over. Log the outcomes through `flag`. Replies logged the following week are the only directly measurable signal any objective produces in the MVP, so they are worth the thirty seconds.
 
-If the openers needed heavy editing, that is a brief problem, not a drafting problem — carry it to `kaveno-retro`, which is where the vocabulary, pains and fit criteria get repaired. If fit criteria are thin, say so and hand back to `kaveno-onboard`; O3 is the objective they block.
+If the openers needed heavy editing, that is a brief problem, not a drafting problem — carry it to the `retro` skill, which is where the vocabulary, pains and fit criteria get repaired. If fit criteria are thin, say so and hand back to the `onboard` skill; O3 is the objective they block.
 
 **The division of labour, restated because it is the point: you make the message worth answering; the server makes the gates real.** The tools refuse blocked contacts whether or not this skill was loaded.

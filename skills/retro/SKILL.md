@@ -1,5 +1,5 @@
 ---
-name: kaveno-retro
+name: retro
 description: Run the weekly retrospective — read what was proposed, selected, rejected and edited, and what came back from outreach, and turn it into a short list of proposed repairs to the market brief. Use when the operator asks for the weekly review or retro, wants to know how the week went, says the drafts keep needing the same correction, asks why nobody is replying, or when a month has passed without the brief changing.
 ---
 
@@ -85,7 +85,7 @@ Thin weeks are usually a source problem, not a scoring problem:
 > month. Proposed: retire the two, and one gap-directed search for renovator-side
 > community sources.*
 
-This hands off to `kaveno-sources`. Do not do the discovery here — name the gap.
+This hands off to the `sources` skill. Do not do the discovery here — name the gap.
 
 ## Producing the repairs
 
