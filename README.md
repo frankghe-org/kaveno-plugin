@@ -60,8 +60,23 @@ install the plugin again.
 **Claude has to be told how to research or judge a source.** Same cause: the
 skills are missing. When they are loaded, none of that needs explaining.
 
-**`Failed to connect`.** The server itself is unreachable. That is the
-administrator's end, not yours; send them the address shown in `claude mcp list`.
+**`Failed to connect`.** The server itself is unreachable. Before telling anyone,
+check whether it is the server or your own network — this needs nothing installed:
+
+```bash
+curl -s -o /dev/null -w '%{http_code}
+'   -H 'Accept: application/json, text/event-stream' https://kaveno.aigent.biz/mcp
+```
+
+`400` means the server is up and answering (a request carrying no MCP session
+cannot succeed, so 400 is the healthy reply). `000` or a timeout means you cannot
+reach it — check your own network first, since a sandbox, a VPN or a corporate
+proxy will block it in a way that looks identical to an outage. Anything else,
+send that number to whoever administers the server.
+
+**The tools are missing but the address answers `400`.** A plugin's server is
+dialled when a session starts, so one installed mid-session does not appear in it.
+Start a new session.
 
 ## Using it
 
