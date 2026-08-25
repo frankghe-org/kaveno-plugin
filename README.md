@@ -73,9 +73,15 @@ reach it — check your own network first, since a sandbox, a VPN or a corporate
 proxy will block it in a way that looks identical to an outage. Anything else,
 send that number to whoever administers the server.
 
-**The tools are missing but the address answers `400`.** A plugin's server is
-dialled when a session starts, so one installed mid-session does not appear in it.
-Start a new session.
+**No `mcp__kaveno__*` tools.** There never will be, working or not. A plugin's
+server is namespaced, so its tools are `mcp__plugin_kaveno_kaveno__<tool>` —
+searching for the short name finds nothing even when everything is fine.
+
+**Still no tools under that name.** Two causes worth separating. A plugin's server
+is dialled when a session starts, so one installed mid-session cannot appear —
+start a new session. And if the environment sets
+`CLAUDE_CODE_SKIP_PLUGIN_MCP_SERVERS=1`, plugin MCP servers are disabled outright;
+nothing about this plugin or the server it points at can change that.
 
 ## Using it
 
