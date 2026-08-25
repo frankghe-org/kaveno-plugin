@@ -14,51 +14,54 @@ here should be edited, since the next publish overwrites it.
 ```bash
 claude plugin marketplace add frankghe-org/kaveno-plugin
 claude plugin install kaveno@kaveno
-claude mcp add --scope user --transport http kaveno https://kaveno.aigent.biz/mcp   --header "Authorization: Bearer <your token>"
 ```
 
-Then start a new Claude session.
+Then start a new Claude session. That is the whole install — no token to paste,
+no environment variable, no checkout, no Docker, no database.
 
-**The third command is the one that matters, and storing the token there rather
-than in the environment is deliberate.** It writes the credential into Claude's
-own configuration, so it survives a new shell, a restart, a desktop launch and a
-container — all places an environment variable quietly fails to reach. It also
-gives the server the plain name `kaveno`, so its tools appear as
-`mcp__kaveno__*`.
-
-The plugin also ships a connection that reads `KAVENO_MCP_TOKEN` from the
-environment. If you would rather work that way, `export KAVENO_MCP_TOKEN=…` in
-whatever starts Claude and skip the third command — but export it somewhere a
-*new* session will see, because a running one has already read its environment.
-The two do not fight: a `kaveno` you add yourself takes precedence over the one
-the plugin ships.
-
-There is nothing else to install: no checkout, no Docker, no database. The server
-holds your map and enforces the rules; these skills are how Claude knows what to
-do with it.
-
-## Your credential
-
-Kaveno works out who you are from a token rather than asking, and every tool
-derives the company and the operator from it — there is deliberately no anonymous
-path. The token is a row with a stated expiry that can be withdrawn on the next
-call, so it is not a secret in a config file and it is not in this repository.
-Whoever administers your Kaveno server issues it.
-
-**`claude mcp list` says `✔ Connected` even with no token at all, and that is not
-a check you can rely on.** Measured with the credential correct, absent and empty
-— all three report Connected. The connection is established before any credential
-is looked at; Kaveno checks it on each request instead. So a missing or expired
-token shows up not there but on the first thing you ask, as:
+`claude mcp list` should show:
 
 ```
-the bearer token does not resolve to an operator
+kaveno: https://kaveno.aigent.biz/mcp (HTTP) - ✔ Connected
 ```
 
-If you see that, the usual cause is that `KAVENO_MCP_TOKEN` never reached the
-environment Claude was started from. Export it and start a new session — a session
-reads it once, at launch. If it is definitely set, the credential itself has
-expired or been withdrawn, and whoever administers your server issues a new one.
+There is nothing else to set up. The server holds your map and enforces the
+rules; these skills are how Claude knows what to do with it.
+
+## Who you are
+
+Kaveno works out who you are from a credential rather than asking, and every tool
+derives the company and the operator from it. That credential is held by the
+server your address points at — not by you, and not by this repository — which is
+why there is nothing to paste.
+
+One consequence worth knowing: everyone reaching a given server is the same
+operator to it, so the map you see is the map everyone on that address sees.
+
+## If something is wrong
+
+**`claude mcp list` says `✔ Connected`, so everything must be fine.** It is not a
+check you can rely on. The connection is established before any credential is
+looked at, so this line says the server is reachable and nothing about whether it
+will answer you.
+
+**`the bearer token does not resolve to an operator`.** The credential your server
+injects has expired or been withdrawn. Nothing on your machine can fix this and
+nothing on your machine caused it — tell whoever administers the server.
+
+**No `mcp__kaveno__*` tools in the session.** The session predates the install.
+Start a new one; `claude plugin details kaveno@kaveno` should list seven skills
+and one MCP server.
+
+**Claude answers, but with a bare error rather than a sentence.** The server is
+connected and the skills are not. Same check as above — if it lists no skills,
+install the plugin again.
+
+**Claude has to be told how to research or judge a source.** Same cause: the
+skills are missing. When they are loaded, none of that needs explaining.
+
+**`Failed to connect`.** The server itself is unreachable. That is the
+administrator's end, not yours; send them the address shown in `claude mcp list`.
 
 ## Using it
 
