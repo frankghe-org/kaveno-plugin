@@ -15,6 +15,20 @@ The operator is a technical founder running Fixeet (construction defect manageme
 
 **Read what already exists before searching for anything.** The first action of every run is `sources()` — no arguments, one call, no exceptions. It takes no arguments **because it cannot**: the company and the operator are derived from the bearer token, never passed, so there is nothing to scope and no way to ask for someone else's map.
 
+**If `sources` is not among your tools, say why in one sentence and stop.** Do not
+search, do not propose, and do not reason aloud about what the map might hold — a run
+that cannot deduplicate produces exactly the re-proposed sources this skill exists to
+prevent.
+
+The cause is almost never the plugin, and guessing at it wastes the operator's day. On
+Cowork and the desktop app the server needs **two** things that the plugin cannot do for
+itself: the host allowlisted for network access, and the server added as a connector
+under **Customize → Connectors** *and* switched on for this chat from the `+` menu.
+Either one missing looks identical to a plugin that never installed. Point at
+`SETUP.md`, name those two, and let the operator check them — do not speculate about
+expired credentials or a server being down before those are ruled out, because both are
+rarer and both send him somewhere else.
+
 It returns the map whole, in two lists:
 
 **`sources[]`** — `id`, `name`, `url`, `source_type`, `segment`, `market`, `objectives_served`, `purpose`, `access_path`, `access_method`, `relevance_score`, `qualification_rationale`, `permission_check` (`passed` and `checked_at`), and **`last_yield_at`**.
