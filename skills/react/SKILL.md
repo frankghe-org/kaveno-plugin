@@ -5,9 +5,15 @@ description: Draft a public reply to a specific post or thread — a question in
 
 # Kaveno react — replying in public, where it counts
 
+**Say which project you are in, before anything else.** Kaveno holds several products, and every read comes back with the scope it was read in — `scope.product`, `scope.segment`, `scope.market`, `scope.language`, and the `available_products`, `available_segments` and `available_markets` lists it could have been narrowed to. Open with one of those reads — `sources` for the map, `brief` or `brief_readiness` for the brief — and state in one line what it says. Do not carry the project over from the last conversation, and do not infer it from what the operator is talking about.
+
+**When the server says the choice is ambiguous, ask — never pick.** A call that reaches more than one product without saying which comes back refused, with the memberships named: *"you work on 2 products and this call did not say which."* That refusal is the question — put the names in front of the operator and let them answer. On a write it can also arrive per entry, as `segment_ambiguous`, `market_ambiguous` or `market_not_recorded`, naming the candidates the same way; it means the same thing. Choosing for them, or retrying with the first one, is how work lands on the wrong map.
+
+**One project per session.** If the operator moves to another product, say so in a line and restate the scope. Nothing on the server remembers a session: the narrowing travels on every call and each call resolves on its own, so a silent switch is invisible in the transcript and expensive in the data.
+
 A reply is public, contextual and one-to-many-who-are-reading, and it is **the highest-leverage act in the product**. One genuinely useful answer in a thread that several hundred practitioners are reading beats a hundred private messages. It touches no contact data, so neither gate applies. And the people who engage with it — reply, react, ask a follow-up — have identified themselves, which is the warm path into O3 and converts better than anything cold.
 
-The operator is a technical founder running Fixeet (construction defect management) alone, in Hebrew, among Israeli architects and renovation contractors. He is a member of these groups before he is a vendor in them, and everything below exists to keep that true.
+The operator is a founder working alone, writing in `scope.language` among the practitioners of `scope.segment` in `scope.market`. He is a member of these groups before he is a vendor in them, and everything below exists to keep that true.
 
 **Objective: O1 primary, O3 secondary.** The reply builds his standing; whoever engages becomes a candidate for the `reachout` skill. Record it as a community answer with both objectives set — reporting counts the primary.
 
@@ -16,15 +22,17 @@ The operator is a technical founder running Fixeet (construction defect manageme
 Three tests, in order. Fail any one and stop; say which one and why.
 
 ### Test 1 — is the question answerable, by him, well
-Read what was actually asked. **The most common failure of this skill is answering the question the operator wishes had been asked** — the thread is about scheduling subcontractors, the draft is about documenting defects, and the group can tell. If the thread is about something Fixeet does not help with, the reply is still a useful one about the thing asked, or there is no reply. Both are acceptable outcomes; a redirected answer is not.
+Read what was actually asked. **The most common failure of this skill is answering the question the operator wishes had been asked** — the thread is about scheduling subcontractors, the draft is about documenting defects, and the group can tell. If the thread is about something this product does not help with, the reply is still a useful one about the thing asked, or there is no reply. Both are acceptable outcomes; a redirected answer is not.
 
-Then check the brief. Replying in a group of practitioners with thin vocabulary is **worse than not replying** — a generic post scrolls past, a generic *reply* is read closely by the person who asked and marks the writer as an outsider permanently. Apply the input gate from the `onboard` skill §3, per segment:
+Then check the brief. Replying in a group of practitioners with thin vocabulary is **worse than not replying** — a generic post scrolls past, a generic *reply* is read closely by the person who asked and marks the writer as an outsider permanently. Call `brief_readiness`, narrowed to this thread's segment and market, and read the answer off it rather than counting anything yourself:
 
 | If | Then |
 |---|---|
-| Vocabulary for this segment is <15 terms or generic | Do not draft. Name the segment and say what a ten-minute vocabulary pass would unblock. |
-| No pain recorded that matches this thread | Draft only if the operator can answer from experience in the conversation; capture what he says back into the brief. |
-| Thread is in a segment the brief does not cover | Refuse and say so. |
+| The `vocabulary` check for this segment, market and language is `blocked` | Do not draft. Quote its `detail` — *"9 of 15 he terms for renovation contractors count"* — and say what a ten-minute vocabulary pass would unblock. Where the detail names entries `recorded but derived and not yet confirmed`, the pass is confirming them, not writing them. |
+| The `vocabulary` check passes but the terms read as brochure language | Do not draft. The server counts rows and cannot read them; specific-versus-generic is your judgement and nothing else in the system will make it. |
+| No pain recorded that matches this thread | Draft only if the operator can answer from experience in the conversation; capture what he says back into the brief through `brief_record`. |
+| The thread is in a segment this product is not pitched to | Refuse and say so, naming the segments in `scope.available_segments`. |
+| The thread is in a market the product does not record | Refuse. The `markets` check says so in terms, and it lists the markets that are recorded. |
 
 ### Test 2 — does the group allow it
 The governing fact is `group.self_promo_policy`, read once by a human and recorded verbatim, with `rules_url` and `rules_read_at` as evidence.
@@ -45,7 +53,7 @@ This is the test the draft lives or dies by. Read it back as a contractor who wi
 - **Concrete over comprehensive.** Two things they can do beats six things they might consider.
 - **Mention the product only where it is materially relevant to the question asked.** Usually it is not. When it is, **disclose affiliation plainly** — he builds it, in his own words, in the same breath.
 - **Never contradict the person who asked in front of the group**, and never correct another commenter by name.
-- Tone rules and hard bans from the brief apply unchanged: no promises about legal outcomes, no naming a developer or a client, no claims about what a court would decide.
+- Tone rules and hard bans from the brief apply unchanged. This operator's are typically *no promises about legal outcomes, no naming a developer or a client, no claims about what a court would decide* — but read the real set from `brief`'s `rule` entries rather than assuming those three. **When a ban blocks the answer you would otherwise give, say which ban and which market's rules it came from.** Rules accumulate up the scope tree, so a ban recorded for the world and a ban recorded for this country read identically in a draft and mean very different things when the operator disagrees with one. Each entry carries the `market_scope` it was recorded at, and `scope.applies_scopes` lists the walk, leaf first — name the one that actually caught the draft.
 
 ### Worked example
 
@@ -84,23 +92,40 @@ The browser assist contract is defined elsewhere; this skill uses it and does no
 
 Two things, both cheap, both easy to lose.
 
-- **Record the reply** as a community answer against the group, with **O1 primary, O3 secondary**, the market-brief version that produced it, and the constraint that shaped it if the group's rules imposed one.
-- **Note who asked, and anyone who engages.** Record the thread and the person's public handle as a discovery signal via `flag` (`kind='discovery'`, with the URL) — **not their contact details.** A number in a group profile was shared for being in that group; it fails Gate 1 on purpose limitation and there is nowhere in the schema to put it. The signal is enough: the weekly sweep resolves the person to a published business identity, or it does not, and if it does not the answer is another reply in another thread.
+- **Record the reply** as a community answer against the group, with **O1 primary, O3 secondary**, the brief save point it was written against, and the constraint that shaped it if the group's rules imposed one. The save point is a revision number, not a commit — `brief(at_revision: N)` reads the brief back as it stood when the reply was drafted.
+- **Note who asked, and anyone who engages** — **not their contact details.** A number in a group profile was shared for being in that group; it fails Gate 1 on purpose limitation and there is nowhere in the schema to put it. The signal is enough: the weekly sweep resolves the person to a published business identity, or it does not, and if it does not the answer is another reply in another thread. **There is nowhere to record it today.** `flag` refuses `kind='discovery'` by name — that kind belongs to the outreach loop, whose person resolution, Gate 1 and suppression paths are not built, and a kind that pretended to work would record a signal nothing will ever read. So keep the handle in the conversation, tell the operator it is not being stored, and do not reach for `flag` to store it anyway.
 
 Say what was recorded in one line. Do not make the operator do bookkeeping for the machine's benefit.
 
 ## 6. Hand-off
 
 - the `sources` skill — when a group's `self_promo_policy` is `unknown` and the reply is blocked on it.
-- the `onboard` skill — when the input gate fails, or when the operator's corrections to a draft reveal vocabulary the brief did not have. Replies are the best source of brief repair in the product: he is writing in his own voice, under pressure, to people who would notice if he got it wrong.
+- the `onboard` skill — when `brief_readiness` blocks the draft, or when the operator's corrections to a draft reveal vocabulary the brief did not have. Replies are the best source of brief repair in the product: he is writing in his own voice, under pressure, to people who would notice if he got it wrong.
 - the `reachout` skill — for anyone who engaged with the reply. That is the warm path, and it is the reason to bother recording the thread at all.
 
-The division of labour is unchanged: **you make the reply good; the server makes the gates real.** Kaveno's tools enforce provenance, suppression and the brief-completeness block whether or not this skill was loaded.
+The division of labour is unchanged: **you make the reply good; the server makes the gates real** — wherever the server can currently be asked. Be exact about which gates those are today. `brief_readiness` is real, so the brief-completeness block holds whether or not this skill was loaded, and so do a group's three `rules` flags. **Provenance and suppression are not**: no registered tool reads or writes `person`, `contact` or `suppression`, and the tools that would are unbuilt. Do not describe those two as enforced. And this skill has no tool of its own, so even the gates that are real are real **where you ask for them and nowhere else** — ask for them.
 
-## Auto-send
+## Posting — there is none, and you must not imply otherwise
 
-Whether you press send or Kaveno does is **your setting**, per act and per channel, and it defaults to you. The policy lives in the channel configuration; the contract and its preconditions are in `02_functional_architecture.md` §8A.
+**Nothing in Kaveno posts or sends anything, and the operator always presses it himself.**
+`REQ-XC-NOSEND-001` is the product's bright line: no code path sends an email, a DM, an
+SMS, a WhatsApp message or places a call, and there is no permitted outbound message at
+all. It is enforced by *absence* (no credential store, no platform client, no cookie jar)
+and by an import lint over the shipped package. Your job ends at handing the operator a
+reply and getting him to the thread.
 
-When auto-send is on for this act and channel, it may still only fire if all six preconditions hold: the body hashes to what was approved, insert-and-read-back verification passed, the target is unambiguous, the gates were re-evaluated at send time, the volume cap is not exceeded, and the cancellation window elapsed. **If any of them fails, hand over — do not retry and do not work around it.** In a batch, an anomaly stops the whole run rather than the item.
+So never say a reply has gone up, never offer to post one, and never describe a mode in
+which Kaveno would. If the operator asks Kaveno to post it, say plainly that it cannot and
+that this is deliberate.
 
-Say which mode you are operating in before a batch, so the operator is never surprised by a message that has already gone.
+*Rewritten 7 September 2026 (#123, in the same pass as `publish`, which carried this
+section verbatim). It previously read "Whether you press send or **Kaveno does** is your
+setting", and described six preconditions under which auto-send "may fire" and a batch in
+which the operator could be "surprised by a message that has already gone". No such
+mechanism exists anywhere in the code, config or schema.*
+
+*What it was reaching for is real but is **not** Kaveno posting:
+`../../docs/arch/02_functional_architecture.md` §8A is a **browser assist** contract, and
+§3 is explicit that it "binds the operator's own browsing tooling, not a Kaveno
+component". Whether that assist is in the MVP at all is still open. Until it is decided
+and built, the operator clicks — describe nothing else.*

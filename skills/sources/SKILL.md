@@ -5,15 +5,23 @@ description: Find, judge and record the sources and groups Kaveno reads — trad
 
 # Kaveno sources — building the map Kaveno reads from
 
+**Say which project you are in, before anything else.** Kaveno holds several products, and every read comes back with the scope it was read in — `scope.product`, `scope.segment`, `scope.market`, `scope.language`, and the `available_products`, `available_segments` and `available_markets` lists it could have been narrowed to. Open with one of those reads — `sources` for the map, `brief` or `brief_readiness` for the brief — and state in one line what it says. Do not carry the project over from the last conversation, and do not infer it from what the operator is talking about.
+
+**When the server says the choice is ambiguous, ask — never pick.** A call that reaches more than one product without saying which comes back refused, with the memberships named: *"you work on 2 products and this call did not say which."* That refusal is the question — put the names in front of the operator and let them answer. On a write it can also arrive per entry, as `segment_ambiguous`, `market_ambiguous` or `market_not_recorded`, naming the candidates the same way; it means the same thing. Choosing for them, or retrying with the first one, is how work lands on the wrong map.
+
+**One project per session.** If the operator moves to another product, say so in a line and restate the scope. Nothing on the server remembers a session: the narrowing travels on every call and each call resolves on its own, so a silent switch is invisible in the transcript and expensive in the data.
+
 Everything Kaveno proposes comes from this list. A thin map produces a daily view of the same three news sites saying the same thing, which the operator stops opening within a fortnight. Your job is to end each run with the map measurably less thin in a place you can name.
 
 This is the one part of the system that **cannot be written as a pipeline**, because the control flow does not exist in advance: the second query depends on the results of the first, a lead runs from an association page to a forum nobody would have guessed at, four candidates are discarded and the fifth pursued. That is why it runs here, interactively, with the operator (`02_functional_architecture.md` §6.4).
 
-The operator is a technical founder running Fixeet (construction defect management) alone, targeting architects and renovation contractors in Israel, in Hebrew. France and the UK come later, and the map must be built so that adding them is rows, not code.
+The operator is a founder running the product alone, targeting the practitioners of `scope.available_segments` in the markets of `scope.available_markets`. Further markets come later, and the map must be built so that adding them is rows, not code.
 
 ## 1. State first, always
 
-**Read what already exists before searching for anything.** The first action of every run is `sources()` — no arguments, one call, no exceptions. It takes no arguments **because it cannot**: the company and the operator are derived from the bearer token, never passed, so there is nothing to scope and no way to ask for someone else's map.
+**Read what already exists before searching for anything.** The first action of every run is `sources()` — one call, no exceptions. It is also what tells you which project you are in: the reply carries the `scope` block, so state that before you say anything about the map.
+
+**It takes three optional arguments — `product`, `segment` and `market` — and they can only ever narrow.** The company and the operator are still derived from the bearer token and are never passed, so there is still no way to ask for someone else's map; what the three selectors do is choose *which* of your own products you are looking at. Call it bare when you work on one product, and it resolves implicitly. Call it bare when you work on two and it is **refused**, naming both — which is the point. The old signature took no arguments at all, and that was not less scope: with no `product` the query unioned across every membership, so a second product produced a silently merged, unattributed map. Fewer arguments bought a worse answer.
 
 **If `sources` is not among your tools, say why in one sentence and stop.** Do not
 search, do not propose, and do not reason aloud about what the map might hold — a run
@@ -29,14 +37,20 @@ Either one missing looks identical to a plugin that never installed. Point at
 expired credentials or a server being down before those are ruled out, because both are
 rarer and both send him somewhere else.
 
-It returns the map whole, in two lists:
+It returns the map whole, in three lists plus the scope it read them in:
 
-**`sources[]`** — `id`, `name`, `url`, `source_type`, `segment`, `market`, `objectives_served`, `purpose`, `access_path`, `access_method`, `relevance_score`, `qualification_rationale`, `permission_check` (`passed` and `checked_at`), and **`last_yield_at`**.
+**`sources[]`** — `id`, `name`, `url`, `source_type`, `segment` (as `{id, name}`), `market`, `objectives_served`, `purpose`, `access_path`, `access_method`, `relevance_score`, `qualification_rationale`, `permission_check` (`passed` and `checked_at`), and **`last_yield_at`**.
 
-**`groups[]`** — `id`, `name`, `provider`, `url`, `segment`, `market`, `access`, `qualification_rationale`, the three `rules` read verbatim (`self_promotion`, `admission`, `private_message`) with `rules_url` and `read_at`, and three flags computed from them: **`rules_read`**, **`offered_as_publication_target`**, **`offered_as_contact_origin`**.
+**`groups[]`** — `id`, `name`, `provider`, `url`, `segment` (free text), `market`, `access`, `qualification_rationale`, the three `rules` read verbatim (`self_promotion`, `admission`, `private_message`) with `rules_url` and `read_at`, and three flags computed from them: **`rules_read`**, **`offered_as_publication_target`**, **`offered_as_contact_origin`**.
 
-Four things in that response do more work than the rest, and a run that ignores them has not really read the map:
+**`parked[]`** — the addresses nobody has judged yet (§5).
 
+**`scope`** — the product, segment, market and language this map was read in, plus the `available_products`, `available_segments` and `available_markets` you could narrow to. The `available_*` lists are there precisely so you can obey the opaque-identifier contract: a segment is submitted by its `id`, never by its name.
+
+Six things in that response do more work than the rest, and a run that ignores them has not really read the map:
+
+- **The map is per product; the groups are not.** `sources[]` and `parked[]` are this product's. `groups[]` is the **company's** — a group qualified while working on another product is visible here, and that is correct: a forum is a place, not a possession. What does *not* carry over is the judgement. *"Does this feed my objectives"* is a per-product question and has to be answered again, which is your job and not the query's. Say so when you recognise a group from the other project: the `rules` flags travel with the group, the relevance does not.
+- **A source's `segment` comes back as `{id, name}`; a group's is free text.** That asymmetry is real and deliberate — `"group".segment` was left as text where `source.segment` became a recorded reference (`Q-SCOPE-1`, open). It has a sharp consequence: when the call narrows by segment, `groups[]` is filtered on the segment's **name**, so a group whose text is misspelt is invisible to the filter. That drift is exactly what the open question is about; do not paper over it, and check the unfiltered list when a group you expected is missing.
 - **`last_yield_at` is null, not zero, when a source has never yielded.** That is a different fact from a low score and it is the one §6 acts on. Do not collapse the two.
 - **`objectives_served` comes back as words** — `authority`, `product`, `outreach` — and never as `O1`/`O2`/`O3`. Use the same words when you submit; the codes are refused as arguments as firmly as they are withheld from answers.
 - **The three `rules` flags are the server's verdict, not a suggestion.** A group with `rules_read: false` is recorded and *not offered* — not as a publication target, not as an origin for contacts. Reading its rules is the highest-value five minutes available in a run, and the map tells you exactly which groups are waiting on it.
@@ -58,7 +72,7 @@ Compute what is thin before you search, and **say which gap each search is addre
 | Which sources have stopped yielding? | `last_yield_at` is old, or **null** — never yielded at all, which is a different fact from a low score. Possibly dead — §6 |
 | Which groups have never had their rules read? | `rules_read: false` — the group is recorded but **not offered**, as a publication target or as an origin for contacts. Absence of a rule means *not read*, never *no rule* |
 
-`segment` is singular on a `source` row, so a site serving both architects and renovators is **two rows**, not one with two labels. Count coverage that way too, or the map looks fuller than it is.
+`segment_id` is singular on a `source` row, so a site serving both architects and renovators is **two rows**, not one with two labels. Count coverage that way too, or the map looks fuller than it is.
 
 ## 3. The search strategies, ranked by what actually worked
 
@@ -98,7 +112,7 @@ Three checks, in order, on every candidate:
 
 > `site:facebook.com/groups` + `שיפוצניקים` + `ליקויי בנייה`
 
-> **Kept — `facebook.com/groups/israeli.architects`.** Hebrew-named, on-segment, and the permalink IDs run above 4.2 million against a few hundred thousand in the neighbouring groups: a crude but real volume signal, and the only one Facebook gives. Recorded as `segment = architects`, `market = IL`, `objectives_served = ['authority']`, `access_path = operator_session` (nothing server-side can read it), rules **unread**, therefore **monitor-only** until he reads them.
+> **Kept — `facebook.com/groups/israeli.architects`.** Hebrew-named, on-segment, and the permalink IDs run above 4.2 million against a few hundred thousand in the neighbouring groups: a crude but real volume signal, and the only one Facebook gives. Recorded as `segment_id = <the id `sources` returned for architects>`, `market = IL`, `objectives_served = ['authority']`, `access_path = operator_session` (nothing server-side can read it), rules **unread**, therefore **monitor-only** until he reads them.
 
 > **Rejected — a `דרושים`-style renovation group.** Nominally the right trade; the visible post previews are homeowners requesting quotes and contractors bidding for them. That is the wrong population twice over — O1 authority spent on people whose opinion of him carries no weight with his buyers, and O2 problem-led content aimed at people who do not have the defect-liability problem. Rejected on audience, not on size.
 
@@ -108,7 +122,7 @@ Three checks, in order, on every candidate:
 
 Per candidate, and none of it is optional:
 
-- **name, URL, `source_type`, `segment`, `market`** — one row per segment;
+- **name, URL, `source_type`, `segment_id`, `market`** — one row per segment. The `segment_id` is the identifier `sources` returned in `scope.available_segments`, **never the segment's name**: a source offering `segment` is refused as an unknown field, which is the loud failure a caller written against the old contract should get. A **group** is the exception and still takes free-text `segment`;
 - **`objectives_served`** — a non-empty array, **in words**: `authority`, `product`, `outreach`. Submitting `O1` is refused (`value_not_in_enum`), which is the same rule that keeps the codes out of the answer. If you cannot name an objective it feeds, it is not a source, it is a bookmark;
 - **`access_path`** — `server` for anything fetchable logged-out; `operator_session` for anything visible only to a logged-in member. Submit it once and only once: `requires_login` is **derived** from it server-side, so there is no second field to keep in agreement and no way to record the two disagreeing. The scheduler never touches an `operator_session` row;
 - **whether a feed, API or structured markup exists** — that decides tier 1 versus tier 2 and nothing else in the map is cheaper to check;
@@ -117,7 +131,7 @@ Per candidate, and none of it is optional:
 
 **For groups, the rules-reading step — and it is three rules, not one.** `self_promo_policy` (what the group allows in the way of self-promotion), `admission_policy` (will this group admit a vendor to the profession rather than a member of it) and `dm_policy` (does it prohibit messaging members privately) are the group's own rules, **read once by a human and recorded verbatim**, with `rules_url` and `rules_read_at` as evidence. A rule that is **absent means not read** — never *no rule* — and until all three plus the reading date are recorded the group comes back `rules_read: false`, which means **monitor-only: it is offered neither as a publication target nor as an origin for contacts, by any skill.** Say this to the operator as what it is — five minutes per group, once, that unblocks every future reply into that group. Guessing a group's rules from its name is how the account is lost.
 
-**The candidate schema is closed, and that is the enforcement.** A candidate carries `kind` (`source` or `group`), `name`, `url`, `segment`, `market` and `qualification_rationale`, plus — for a source — `source_type`, `objectives_served`, `purpose`, `access_path`, `access_method`, `relevance_score`, `robots_ok`, `robots_checked_at`, `admission`; or — for a group — `provider`, `access`, `self_promo_policy`, `admission_policy`, `dm_policy`, `rules_url`, `rules_read_at`. **Any other key is refused** with `unknown_field`, whatever it holds. That is not a validation nicety: it is why a submission enumerating members is refused for having nowhere to land, rather than by anyone trying to recognise one.
+**The candidate schema is closed, and that is the enforcement.** A candidate carries `kind` (`source` or `group`), `name`, `url`, `market` and `qualification_rationale`, plus — for a source — `segment_id`, `source_type`, `objectives_served`, `purpose`, `access_path`, `access_method`, `relevance_score`, `robots_ok`, `robots_checked_at`, `admission`; or — for a group — `segment`, `provider`, `access`, `self_promo_policy`, `admission_policy`, `dm_policy`, `rules_url`, `rules_read_at`. **Any other key is refused** with `unknown_field`, whatever it holds — and note that `segment` on a *source* is now one of those keys, while `segment_id` on a *group* is another. That is not a validation nicety: it is why a submission enumerating members is refused for having nowhere to land, rather than by anyone trying to recognise one.
 
 **Never record members, and never record admin identities.** Group name, URL, description, member count and privacy setting are not personal data; admin names and profile URLs are. There is no member table and no person-to-group edge, deliberately — a schema shaped like a roster is an invitation to fill one. Surface a live link to the public page instead of storing a person.
 
@@ -133,7 +147,7 @@ Three tools sit close enough together to be confused, and **only one of them rec
 
 **The distinction that actually gets confused is the first two.** `flag` is not a lightweight `sources_add`; it is the **absence** of a judgement, recorded honestly. Flagging a candidate you have already qualified throws away the reasoning, the score and the permission check, and leaves the operator to do the work again from a bare URL. Submitting an unqualified URL through `sources_add` is the opposite error and the server refuses it — with no `qualification_rationale`, no `objectives_served` and no recorded permission check, it is refused three times over. **If you did the work, `sources_add` it. If you did not, `flag` it and say so.**
 
-**Which of the three doors is open today, stated plainly.** The server registers **three** tools — `sources`, `sources_add` and `flag`. `capture` is specified (`02_functional_architecture.md` §6A) and is **not yet built**, so a page the operator puts in front of you still has nowhere to go but the conversation. **Do not invent a call.** A skill that names a tool the server does not expose is worse than one that says the gap out loud — the operator finds out at the point of failure instead of at the point of planning.
+**Which doors are open today, stated plainly.** The server registers **nine** tools: `sources` and `sources_add` for the map; `brief`, `brief_record`, `brief_derive`, `brief_promote`, `brief_confirm` and `brief_readiness` for the market brief; and `flag`. `capture` is specified (`02_functional_architecture.md` §6A) and is **not yet built**, so a page the operator puts in front of you still has nowhere to go but the conversation — and neither are the daily-loop and outreach tools (`today`, `select`, `posted`, `contacts`, `contacted`). **Do not invent a call.** A skill that names a tool the server does not expose is worse than one that says the gap out loud — the operator finds out at the point of failure instead of at the point of planning. `mcp/kaveno_mcp/server.py` is what says which exist today; the fifteen-tool contract in `02` says which are specified, and the two numbers are not the same number.
 
 **`flag` implements one of its four kinds.** `kind='source_candidate'` works. `discovery`, `not_interested` and `suppress` are specified and refused as *not built yet* — they belong to the O3 outreach loop, whose person resolution and suppression paths do not exist. The refusal says so and names what is available; it is not a rejection of what you asked for.
 
@@ -197,7 +211,7 @@ Say what you retired and why, in one line each. A retired source the operator di
 
 ## 9. Hand-off
 
-- **the `onboard` skill** — if the brief cannot distinguish the segments, you cannot judge relevance and neither can he. Stop and say so; a source map built against a vague segment is worse than none, because it looks like coverage.
+- **the `onboard` skill** — if the brief cannot distinguish the segments, you cannot judge relevance and neither can he. `brief_readiness` says so by name: its `segment_description` check comes back blocked with *"X has no description recorded, so nothing distinguishes it from the segment next to it"*. Stop and quote it; a source map built against a vague segment is worse than none, because it looks like coverage.
 - **the `scan` skill** — every `access_path = 'operator_session'` source you record is work for that skill, and a group nobody sweeps is a row, not a source.
 - **the `react` skill** — when a reply is blocked on a group whose rules were never read (`rules_read: false`), this is the skill that unblocks it, and reading one group's three rules is five minutes.
 - **the `publish` skill** — a source with `purpose` of `publish` or `both` is a place to post, not only to read. Say which of the new rows are which.

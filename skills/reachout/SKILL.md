@@ -5,20 +5,34 @@ description: Run the weekly Kaveno contact review and prepare a private first me
 
 # Kaveno reachout — one message, to one person, that they might answer
 
-This is O3: **one-to-one, product-centred, individually qualified.** Everything here is sized for one person at a time — one architect who posted something specific, one contractor whose listing says they do handovers. Roughly twenty a week, in Hebrew, by a founder who has no team. Kaveno is not a bulk tool; it removes the mechanical work from personalised contact and nothing else.
+**Say which project you are in, before anything else.** Kaveno holds several products, and every read comes back with the scope it was read in — `scope.product`, `scope.segment`, `scope.market`, `scope.language`, and the `available_products`, `available_segments` and `available_markets` lists it could have been narrowed to. Open with one of those reads — `sources` for the map, `brief` or `brief_readiness` for the brief — and state in one line what it says. Do not carry the project over from the last conversation, and do not infer it from what the operator is talking about.
+
+**When the server says the choice is ambiguous, ask — never pick.** A call that reaches more than one product without saying which comes back refused, with the memberships named: *"you work on 2 products and this call did not say which."* That refusal is the question — put the names in front of the operator and let them answer. On a write it can also arrive per entry, as `segment_ambiguous`, `market_ambiguous` or `market_not_recorded`, naming the candidates the same way; it means the same thing. Choosing for them, or retrying with the first one, is how work lands on the wrong map.
+
+**One project per session.** If the operator moves to another product, say so in a line and restate the scope. Nothing on the server remembers a session: the narrowing travels on every call and each call resolves on its own, so a silent switch is invisible in the transcript and expensive in the data.
+
+This is O3: **one-to-one, product-centred, individually qualified.** Everything here is sized for one person at a time — one architect who posted something specific, one contractor whose listing says they do handovers. Roughly twenty a week, in `scope.language`, by a founder who has no team. Kaveno is not a bulk tool; it removes the mechanical work from personalised contact and nothing else.
 
 **What this skill refuses.** A person who has not passed both gates. A draft that pitches. A run where the operator would be typing the message themselves. Anything that routes around a refusal from the server.
 
+## The map is per product; the people are not
+
+Sources, the brief and the parked pile are scoped to the product you are working on. **A person is not.** The person pool, the contact cooldown and suppression are **company-wide, across every user and every product**: somebody contacted for one project is not approachable for another until the window closes, and a suppression fans out to every identifier that person is known by. The window is configured rather than hard-coded — the intended default is ninety days — so where you state a number, state it as the configured window and not as a law of the system. (The fourteen-day group cooldown is a different rule and belongs to publishing: it excludes a *group* after a promotional post, and it has nothing to do with who may be contacted.)
+
+**Say this out loud when the operator is working on more than one product**, because it is the one place the scope statement at the top of the session does not apply, and the intuition runs the other way. The reason is not tidiness. The anti-spam guarantee is what the recipient is owed, and it is owed by the company, not by the project — a person who declined one product's approach did not thereby volunteer for the next one.
+
+**And be honest about where that guarantee currently lives.** It is in the schema — `person` and `suppression` carry a company and no product, and the cooldown index is keyed on the company — and in the requirements. It is **not yet in a tool you can call**: `contacts` and `contacted` are specified and not built, and nothing in the thirteen registered tools (7 September 2026) reads or writes `person`, `contact` or `suppression`. So describe the rule as the design it is. Do not tell the operator that the server will refuse a cross-product approach today, because today there is no call for it to refuse.
+
 ## The gates — the part that is not yours to decide
 
-Both gates apply to O3, and **only** to O3. The server has already evaluated them before a candidate reaches you; the `contacts` tool re-checks suppression at read time. Your job is to read the result and act on it, never to reason your way past it.
+Both gates apply to O3, and **only** to O3. The gates are specified to be evaluated by the server before a candidate reaches you, with `contacts` re-checking suppression at read time. That tool is not built, so until it is, there is no server verdict to read here and this section describes the contract rather than something you can currently exercise. When it exists, your job is to read the result and act on it, never to reason your way past it.
 
 | | Question | What must be true | Israel, concretely |
 |---|---|---|---|
 | **Gate 1** | May we hold and use these details? | A recorded `source_provenance` and `lawful_basis` on the `person` row, and the details taken from a **published business identity** — public register, association directory, the practice's own site, a Google Business listing | `lawful_basis = published_business_contact` on essentially every row |
 | **Gate 2** | May we use this channel, in this market? | The channel is open in the recipient's market, and suppression and rate limits are clear before anything is drafted | Phone: screened against the national do-not-call registry. Email: consent-only, so **not offered**. WhatsApp: prior opt-in only |
 
-**Contact details never come from a group's member list.** Same digits, different status: they were shared for participating in that community, and using them for a business approach fails purpose limitation. A group post is a *discovery signal*, nothing more — `flag` it with `kind='discovery'` and the Sunday sweep resolves the person to a published identity or does not.
+**Contact details never come from a group's member list.** Same digits, different status: they were shared for participating in that community, and using them for a business approach fails purpose limitation. A group post is a *discovery signal*, nothing more — and it is specified to be recorded with `flag(kind='discovery')`, so that the Sunday sweep resolves the person to a published identity or does not. **That kind is refused by name today**, together with `not_interested` and `suppress`, because all three belong to this loop and this loop is not built. Only `source_candidate` is implemented. Keep the signal in the conversation and say it is not being stored.
 
 **When a person fails Gate 1, the correct move is to reply to them publicly, in the thread where you saw them.** Say that out loud rather than reporting a dead end. It is a real action, it is free, and it serves O1 at the same time. `contacts` returns the count in `skipped` precisely so this conversation can happen.
 
@@ -38,7 +52,7 @@ Call `contacts` (limit 5 by default; up to 10). For each candidate, put in front
 
 **When to skip.** Too small to have the problem. Wrong side of the transaction. Evidence older than a couple of months, unless it was a considered post rather than a passing comment. No published contact — reply in the thread instead. Any doubt about whether the identity and the business are the same person: `identity_evidence_url` is what settles that, and if it is thin, skip.
 
-The operator's verdicts go back through `flag`: `not_interested` for a no (it never resurfaces), `suppress` for someone who asks not to be contacted (it fans out to every identifier that person is known by, and survives deletion of the row).
+The operator's verdicts are specified to go back through `flag`: `not_interested` for a no (it never resurfaces), `suppress` for someone who asks not to be contacted (it fans out to every identifier that person is known by, and survives deletion of the row). **Both kinds are refused by name today**, for the same reason `discovery` is — they belong to this loop, and this loop is not built. Say the verdict back to the operator and say that it is not being recorded; do not route it through a kind that will refuse it.
 
 ## 2. Shaping the qualifying question
 
@@ -61,7 +75,7 @@ Under 60 words. No product name unless the answer is yes. No claim about legal o
 > **Opener (he):**
 > *שלום דנה, ראיתי את הפוסט שלך בפורום האדריכלים מה-12.8 על תיעוד אי-התאמות במסירה. הגעתי אלייך דרך הפרטים המפורסמים באתר המשרד. את מי שמטפלת בליקויים אחרי מסירה מול היזם — ושווה לך שתי דקות על זה?*
 >
-> Note `אי-התאמות` rather than `ליקויי בנייה` — she is arguing against a developer at handover, and the wrong one of the two marks the sender as an outsider. That distinction comes from the brief's vocabulary section; if it is not there, drafting in Hebrew is blocked and you should say so instead of guessing.
+> Note `אי-התאמות` rather than `ליקויי בנייה` — she is arguing against a developer at handover, and the wrong one of the two marks the sender as an outsider. That distinction is a `vocabulary` entry in the brief, resolved for this segment, this market and this language; if `brief_readiness` reports the vocabulary check blocked, drafting is blocked and you should quote it instead of guessing.
 
 ## 3. The assisted send
 
@@ -108,8 +122,8 @@ The operator reads it and presses send.
 
 ## 6. Hand-off
 
-Close the session with: how many were reviewed, how many were prepared, how many were skipped and why, and anything that failed to a hand-over. Log the outcomes through `flag`. Replies logged the following week are the only directly measurable signal any objective produces in the MVP, so they are worth the thirty seconds.
+Close the session with: how many were reviewed, how many were prepared, how many were skipped and why, and anything that failed to a hand-over. Outcomes are specified to be logged through `contacted`, and replies logged the following week are the only directly measurable signal any objective produces in the MVP — **but neither `contacted` nor `flag`'s outreach kinds exist yet**, so there is nowhere to put them. Give the operator the closing count in the conversation and be plain that it is not being kept.
 
-If the openers needed heavy editing, that is a brief problem, not a drafting problem — carry it to the `retro` skill, which is where the vocabulary, pains and fit criteria get repaired. If fit criteria are thin, say so and hand back to the `onboard` skill; O3 is the objective they block.
+If the openers needed heavy editing, that is a brief problem, not a drafting problem — carry it to the `retro` skill, which is where the vocabulary, pains and fit criteria get repaired. If fit criteria are thin, say so and hand back to the `onboard` skill: `brief_readiness`'s `fit_criterion` check names **outreach** as the objective it blocks, and it blocks on *either* polarity missing — *"with only qualifiers recorded Kaveno keeps proposing people you would never contact."*
 
-**The division of labour, restated because it is the point: you make the message worth answering; the server makes the gates real.** The tools refuse blocked contacts whether or not this skill was loaded.
+**The division of labour, restated because it is the point: you make the message worth answering; the server makes the gates real.** That is the contract, and it holds wherever the server can currently be asked. For this loop it cannot be yet — so make the message worth answering, and say plainly which refusals are the design rather than something running today.

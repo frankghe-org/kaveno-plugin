@@ -5,9 +5,15 @@ description: Run the daily publishing decision — present what is worth publish
 
 # Kaveno publishing — the daily decision, and the post that comes out of it
 
+**Say which project you are in, before anything else.** Kaveno holds several products, and every read comes back with the scope it was read in — `scope.product`, `scope.segment`, `scope.market`, `scope.language`, and the `available_products`, `available_segments` and `available_markets` lists it could have been narrowed to. Open with one of those reads — `sources` for the map, `brief` or `brief_readiness` for the brief — and state in one line what it says. Do not carry the project over from the last conversation, and do not infer it from what the operator is talking about.
+
+**When the server says the choice is ambiguous, ask — never pick.** A call that reaches more than one product without saying which comes back refused, with the memberships named: *"you work on 2 products and this call did not say which."* That refusal is the question — put the names in front of the operator and let them answer. On a write it can also arrive per entry, as `segment_ambiguous`, `market_ambiguous` or `market_not_recorded`, naming the candidates the same way; it means the same thing. Choosing for them, or retrying with the first one, is how work lands on the wrong map.
+
+**One project per session.** If the operator moves to another product, say so in a line and restate the scope. Nothing on the server remembers a session: the narrowing travels on every call and each call resolves on its own, so a silent switch is invisible in the transcript and expensive in the data.
+
 This is broadcast: one post, to a discussion group, a forum, or the operator's own feed. It serves **O1** — build the operator's authority with quality content in the domain, product-neutral — and **O2** — promote the product, in three modes of decreasing directness and increasing effectiveness. Every item you present carries exactly one objective; an item you cannot assign one to is not an item.
 
-The operator is a technical founder running the product alone, publishing in Hebrew to architects and renovation contractors in Israel. The target is three or more posts a week at under five minutes a day. **Everything below is subordinate to that number.** A session that produces a better post in eleven minutes has failed.
+The operator is a founder running the product alone, publishing in `scope.language` to the practitioners of `scope.segment` in `scope.market`. The target is three or more posts a week at under five minutes a day. **Everything below is subordinate to that number.** A session that produces a better post in eleven minutes has failed.
 
 ## What this skill refuses
 
@@ -15,17 +21,25 @@ The operator is a technical founder running the product alone, publishing in Heb
 
 - **The group's recorded self-promotion rules** (`group.self_promo_policy`). Where they are `unknown`, that group is monitor-only and **no product-referencing content may be drafted for it at all** — not direct, not comparative, not problem-led — until a human has read the rules and they are recorded.
 - **The mix target** across objectives, roughly 70% O1 / 30% O2. Advisory in v1: report the drift, bias the options, **never silently override the operator**.
-- **The brief's tone rules and hard bans.** When a ban blocks the best angle, say which ban and offer the next-best angle. Never quietly produce the sanitised version — the operator cannot argue with a rule they never saw.
+- **The brief's tone rules and hard bans.** When a ban blocks the best angle, say which ban, **and which market's rules it came from**, and offer the next-best angle. Rules accumulate up the scope tree, so a ban recorded for the world and a ban recorded for this country read identically in a draft and mean very different things when the operator wants to argue with one; each entry carries the `market_scope` it was recorded at, and `scope.applies_scopes` lists the walk, leaf first. Never quietly produce the sanitised version — the operator cannot argue with a rule they never saw, and cannot argue with a rule whose reach they cannot see either.
 
-**The input gate applies before any of it.** Thin vocabulary blocks in-language drafting, which blocks O1 and O2 both. No recorded pain points blocks the problem-led mode of O2 — the highest-value content this product can publish. When you are blocked, name the dimension, name the objective it blocks, and say roughly what it takes to fix. **Producing weaker output without saying why is the failure this skill exists to prevent.**
+**The gate applies before any of it, and it is `brief_readiness`'s call, not yours.** Read its `verdict` and its `checks`: thin vocabulary blocks in-language drafting, which blocks authority and product content both; no recorded pain blocks the problem-led mode, the highest-value content this product can publish. When you are blocked, quote the check's `detail` sentence, name the objective in `blocks` — **authority**, **product**, **outreach**, never the codes — and say roughly what it takes to fix. Where a `detail` says entries are *recorded but derived and not yet confirmed*, the fix is confirming them, not writing them again. **Producing weaker output without saying why is the failure this skill exists to prevent.**
 
-Two standing rules with no exceptions. **Drafts are generated in-language, never translated** — the Hebrew post comes from the Hebrew sources and the Hebrew vocabulary in the brief, not from an English master run through a translation step; a translated post reads as translated and that is the whole cost. And **the operator never sees a category code.** C1–C13 exist in the data. On screen it is *explainer*, *myth-busting*, *news plus a take*, *educational*, *comparison*, *problem-led — product not named*. A code on screen is a defect.
+Two standing rules with no exceptions. **Drafts are generated in-language, never translated** — the post comes from that market's sources and from the brief's vocabulary for that segment in that language, not from an English master run through a translation step; a translated post reads as translated and that is the whole cost. The brief itself holds the same line: content exported to a new market arrives untranslated on purpose, and re-finding the term is what confirming it means. And **the operator never sees a category code.** C1–C12 exist in the data — the taxonomy stops at C12; there is no C13. On screen it is *explainer*, *myth-busting*, *news plus a take*, *educational*, *comparison*, *problem-led — product not named*. A code on screen is a defect.
 
 ## The daily loop
 
+**Which doors are open today.** The server registers `sources`, `sources_add`, `source_decide`, `brief`, `brief_record`, `brief_derive`, `brief_promote`, `brief_confirm`, `brief_readiness`, `flag`, `today`, `select` and `posted`. **All of them, including the three the loop below turns on — `today`, `select` and `posted`.** Run the loop against the server, not against what the operator brings.
+
+*Corrected 7 September 2026 (#123). This paragraph used to say `today`, `select` and `posted` were "specified and not built" and told you to run the loop without them. They are built and registered (`mcp/kaveno_mcp/server.py`), and the instruction to work around them was the more expensive error of the two: naming a tool the server does not expose is bad, but refusing to call one it does means the day is never retrieved and the operator's posts are never recorded.*
+
 `today` returns outstanding posts first, then the streak and mix line, then the items. Present them in that order, because the order is the product.
 
-**Open with the outstanding question if there is one.** *"2B from Tuesday — did you post it?"* Yes / no / cancel, one word. An unlogged post silently breaks the only number tracked.
+**Open with the outstanding question if there is one — and it is one question per PLACE, not per angle.** An angle bound for three groups and posted in one of them comes back as **two** entries, one for each place it has not reached, each with its own `variant_id`. So name the place: *"2B from Tuesday — it went to the renovators' group. Did it go to the architects' one?"* Yes / no, one word. An unlogged post silently breaks the only number tracked.
+
+**"Stop asking" and "cancel" are two different answers, and the difference is the angle's fate.** *Stop asking* means the angle stands — the operator simply does not want to be chased about the places it has not reached, **for that angle only**; he is still asked about the next angle's unreached places. *Cancel* means the angle is off and is never raised again for any place. Offer them as the distinct things they are; a single word covering both loses the distinction the operator just made.
+
+**Neither answer is recordable yet, and you must say so rather than imply it took.** No tool on the surface writes either one — the day's block reads them, and nothing on the server writes them. So when the operator says stop asking or cancel, honour it **for this conversation** and tell him plainly it will come back tomorrow until the tool exists. Letting him believe he has switched something off permanently is the failure this paragraph exists to prevent: he would stop answering a question that keeps being asked, and the number the product instruments is the one that suffers.
 
 **Then one line of arithmetic.** *"Posts this week: 3 (last week: 2). Mix this month: 78% authority / 22% product — on target."* Plain words, never `O1`/`O2` codes on screen.
 
@@ -116,16 +130,36 @@ What the tools record, and why it matters: `select` sets the chosen angle to sel
 
 ## Hand-off
 
-- **The input gate blocked something** → the `onboard` skill, naming the thin dimension.
+- **`brief_readiness` blocked something** → the `onboard` skill, naming the thin dimension and the market and segment it was thin in.
 - **A group has no recorded self-promotion rules, or a source has gone quiet** → the `sources` skill.
 - **Weekly** → the `retro` skill, which reads which drafts were rewritten heavily and tells you which part of the brief is weak. Heavy rewriting three sessions running is a brief problem, not a drafting problem, and the answer is to fix the brief and build nothing new.
 
-Remember the division of labour: **you make the choice and the draft good; the server makes the gate real.** The tools return their gate status and refuse the blocked objectives whether or not this skill was loaded.
+Remember the division of labour: **you make the choice and the draft good; the server makes the gate real.** `brief_readiness` returns that status and it holds whether or not this skill was loaded. **But it is not yet reachable from the daily loop** — not because `today` and `select` are missing (they are built and registered), but because neither consults the gate: nothing in the day's own modules reads a readiness verdict. So the refusal is real where you ask for it and nowhere else. Ask for it.
 
-## Auto-send
+*Corrected 7 September 2026 (#123). The reason given here used to be that the tools did not exist, which is no longer true and would have you waiting for something that has already arrived.*
 
-Whether you press send or Kaveno does is **your setting**, per act and per channel, and it defaults to you. The policy lives in the channel configuration; the contract and its preconditions are in `02_functional_architecture.md` §8A.
+## Sending — there is none, and you must not imply otherwise
 
-When auto-send is on for this act and channel, it may still only fire if all six preconditions hold: the body hashes to what was approved, insert-and-read-back verification passed, the target is unambiguous, the gates were re-evaluated at send time, the volume cap is not exceeded, and the cancellation window elapsed. **If any of them fails, hand over — do not retry and do not work around it.** In a batch, an anomaly stops the whole run rather than the item.
+**Nothing in Kaveno sends anything, and the operator always presses send himself.**
+`REQ-XC-NOSEND-001` is the product's bright line: no code path sends an email, a DM, an
+SMS, a WhatsApp message or places a call, and there is no permitted outbound message at
+all — not even one addressed to the operator. It is enforced by *absence* (no credential
+store, no platform client, no cookie jar) and by an import lint over the shipped package.
+Your job ends at handing the operator a body and getting him into the composer.
 
-Say which mode you are operating in before a batch, so the operator is never surprised by a message that has already gone.
+So never say a message has gone, never offer to send one, and never describe a mode in
+which Kaveno would. If the operator asks Kaveno to send it, say plainly that it cannot and
+that this is deliberate.
+
+*Rewritten 7 September 2026 (#123). This section previously read "Whether you press send or
+**Kaveno does** is your setting", and described six preconditions under which auto-send
+"may fire" and a batch in which the operator could be "surprised by a message that has
+already gone". No such mechanism exists anywhere in the code, config or schema — and a
+skill telling the model Kaveno can send, in the one product whose defining guarantee is
+that it never does, is the most dangerous sentence this file could carry.*
+
+*What it was reaching for is real but is **not** Kaveno sending:
+`../../docs/arch/02_functional_architecture.md` §8A is a **browser assist** contract, and
+§3 is explicit that it "binds the operator's own browsing tooling, not a Kaveno
+component". Whether that assist is in the MVP at all is still open. Until it is decided
+and built, the operator clicks — describe nothing else.*
