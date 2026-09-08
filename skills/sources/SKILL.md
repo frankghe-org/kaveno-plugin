@@ -151,14 +151,24 @@ Three tools sit close enough together to be confused, and **only one of them rec
 
 **`flag` implements one of its four kinds.** `kind='source_candidate'` works. `discovery`, `not_interested` and `suppress` are specified and refused as *not built yet* — they belong to the O3 outreach loop, whose person resolution and suppression paths do not exist. The refusal says so and names what is available; it is not a rejection of what you asked for.
 
-**Parking is for the pile you did not judge, and only that.** Reviewing a sweep produces three outcomes: approved → `sources_add`; rejected → nothing, correctly; undecided → `flag`. Keep those apart, because the two mistakes are opposite and both are silent:
+**Reviewing a sweep produces three outcomes, and all three are recorded.** Approved → `sources_add`. **Rejected → `source_decide`.** Undecided → `flag`. Keep them apart, because the mistakes are opposite and all of them are silent:
 
-- **Never park a candidate you HAVE judged.** Parking throws the judgement away — the objectives, the score, the permission check and the reasoning all have nowhere to go on a parked row, by design. If you have judged it, it goes through `sources_add`.
+- **A rejection is a decision, so record it.** *Corrected 8 September 2026 (`Q-SRC-14`, #128). This paragraph used to say "rejected → nothing, correctly", and that was the design until the tool existed.* Call `source_decide` with `decision='reject'`, the judged `candidate` — the same object `sources_add` takes — and the **reasoning**. The operator is then not asked about that address again. Without it, the same *"Trouver des chantiers"* group comes back on page one next month and is judged from scratch, to the same answer, at the same cost.
+- **Never park a candidate you HAVE judged.** Parking throws the judgement away — the objectives, the score, the permission check and the reasoning all have nowhere to go on a parked row, by design. Judged and wanted → `sources_add`; judged and not wanted → `source_decide`.
 - **Never route an unjudged URL through `sources_add` to get it recorded.** It is refused three times over (no reasoning, no objectives, no permission check), and that refusal is correct.
+
+**A rejection is a standing judgement, not evidence of a moment.** Rejecting again updates it, and `decision='admit'` withdraws it — so an address turned down because it was paywalled, or because it served a segment the brief has since moved off, becomes a source when the reasoning stops holding. Say that to the operator rather than treating a rejection as final.
+
+**How far a rejection reaches, which is the operator's choice.** It binds the candidate's own market unless `market_scope` names a wider node, and a rejection at a wider node covers every market beneath it. So *"wrong population in Israel"* and *"homeowners, not professionals — anywhere"* are both sayable, and you should ask which he means when it is not obvious. One bound worth knowing and stating: a market the operator has not established in the applicability tree is not reached, and no decision can be recorded against one either — so nothing is silently lost, but a worldwide rejection does not bind a market that is not in the tree yet.
 
 A parked address takes a `url` and an optional `note` (≤500 characters) and nothing else. Giving it a `subject_id` is refused: naming who it is about is itself a judgement.
 
-**Read the parked pile before proposing anything.** `sources` returns it under `parked`, alongside `sources` and `groups`, precisely so a sweep does not re-find what the operator already declined to decide last time. Dedup your proposals against **all three** — a candidate already parked should be surfaced as *"you kept this on 3 August, still undecided?"*, not proposed as new. A parked address is **not** in the map: it has no segment, no market, no objectives and no rationale, and nothing in the pipeline will ever read it.
+**Read the parked and rejected piles before proposing anything.** `sources` returns four things — `sources`, `groups`, `parked` and `rejected` — precisely so a sweep does not re-find what the operator already dealt with. **Dedup your proposals against all four.** *Updated 8 September 2026 (#128); this said "all three" when a rejection had nowhere to live.*
+
+What you do on a hit differs, and the difference is the point:
+
+- **Parked** — *"you kept this on 3 August, still undecided?"* He declined to decide, so ask again. A parked address is **not** in the map: no segment, no market, no objectives, no rationale, and nothing in the pipeline will ever read it.
+- **Rejected** — **do not re-ask.** He decided, and it stays decided until he revisits it. Raise it only if you have a reason to think the recorded reasoning has stopped holding — and then say what changed, rather than re-opening the question cold.
 
 **`sources_add` answers per candidate, and the answer is worth reading.** A submission of twenty comes back as twenty results, each `created`, `enriched`, `duplicate` or `refused`, plus counts. One candidate's refusal never discards another's acceptance.
 
