@@ -29,11 +29,14 @@ that cannot deduplicate produces exactly the re-proposed sources this skill exis
 prevent.
 
 The cause is almost never the plugin, and guessing at it wastes the operator's day. On
-Cowork and the desktop app the server needs **two** things that the plugin cannot do for
-itself: the host allowlisted for network access, and the server added as a connector
-under **Customize → Connectors** *and* switched on for this chat from the `+` menu.
-Either one missing looks identical to a plugin that never installed. Point at
-`SETUP.md`, name those two, and let the operator check them — do not speculate about
+Cowork and the desktop app the server needs one thing the plugin cannot do for itself: to
+be added as a connector under **Customize → Connectors** *and* switched on for this chat
+from the `+` menu. Its `.mcp.json` registers a **local** MCP server, and local servers do
+not run in cloud sessions, so on those surfaces the plugin carries the skills and the
+connector carries the tools. *Until 8 September 2026 this paragraph also named a network
+allowlist; that was wrong — egress permissions do not apply to MCPs — and it sent people
+to a setting that changes nothing.* Point at `SETUP.md`, name the connector, and let the
+operator check it — do not speculate about
 expired credentials or a server being down before those are ruled out, because both are
 rarer and both send him somewhere else.
 
