@@ -16,7 +16,7 @@
         "mcp",
         "source-map"
       ],
-      "version": "0.1.5",
+      "version": "0.1.6",
       "description": "A marketing and communication assistant for a small B2B operator. Finds what is worth saying, drafts it, and says who to talk to — and never contacts anyone itself.",
       "homepage": "https://github.com/frankghe-org/kaveno-plugin"
     }
