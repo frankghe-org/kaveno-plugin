@@ -20,19 +20,28 @@ people who built this.
 
 ## Before anything: Claude needs access to this repository
 
-**Grant Claude access to your GitHub account, and to `frankghe-org/kaveno-plugin` in particular.** A
-marketplace added from a GitHub repository is synced by Claude on your behalf, so without
-that access it cannot read the repository at all.
+**Install the Claude GitHub App on the account that OWNS `frankghe-org/kaveno-plugin`** — not merely on
+your own. Automatic sync will tell you so at the toggle: *"Auto-sync requires the Claude
+GitHub App to have access to this repository."*
 
-This is the step that is easiest to miss, because **nothing about the failure names it**.
-The marketplace appears in your list. Adding it again is refused as *"already added"*. The
-plugin's Update button is simply greyed, for every release, indefinitely — and the version
-you are on is whatever happened to be published when access last worked, which may be
-months old. It reads as a stale cache or a broken publish, and it is neither. It cost the
-people who built this the better part of a day.
+**This is required even though the repository is public, and that is not a
+contradiction.** Public visibility governs who may READ the repository — anyone, with no
+credential at all. Auto-sync is not a read; it is a NOTIFICATION that the repository
+changed, and GitHub does not notify a third party about a repository unless an App is
+installed on it. Reading needs nothing. Being told needs the App.
 
-If a marketplace has stopped picking up new versions, check this **first** and check it
-before theorising about anything else.
+**App installations do not cross accounts.** A user account and an organisation are
+separate installation targets with no inheritance between them, so an App installed on
+your personal account grants exactly nothing for a repository owned by an organisation —
+which `frankghe-org/kaveno-plugin` is. Install it on the organisation.
+
+*This file told you to "grant Claude access to your GitHub account" until 10 September
+2026, and said that without it Claude "cannot read the repository at all". Both halves
+were wrong: the account is the wrong target when an organisation owns the repository, and
+reading was never the thing that needed granting.*
+
+Note what this does NOT fix: the **manual** Update button. That is a separate fault with a
+separate cause, and having auto-sync working does not light it up.
 
 ## Cowork and the Claude desktop app
 
