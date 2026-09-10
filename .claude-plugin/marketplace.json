@@ -8,7 +8,10 @@
   "plugins": [
     {
       "name": "kaveno",
-      "source": "./",
+      "source": {
+        "source": "github",
+        "repo": "frankghe-org/kaveno-plugin"
+      },
       "category": "productivity",
       "tags": [
         "marketing",
@@ -16,7 +19,6 @@
         "mcp",
         "source-map"
       ],
-      "version": "0.2.0",
       "description": "A marketing and communication assistant for a small B2B operator. Finds what is worth saying, drafts it, and says who to talk to — and never contacts anyone itself.",
       "homepage": "https://github.com/frankghe-org/kaveno-plugin"
     }
