@@ -5,7 +5,7 @@ description: Run the daily publishing decision — present what is worth publish
 
 # Kaveno publishing — the daily decision, and the post that comes out of it
 
-**Say which project you are in, before anything else.** Kaveno holds several products, and every read comes back with the scope it was read in — `scope.product`, `scope.segment`, `scope.market`, `scope.language`, and the `available_products`, `available_segments` and `available_markets` lists it could have been narrowed to. Open with one of those reads — `sources` for the map, `brief` or `brief_readiness` for the brief — and state in one line what it says. Do not carry the project over from the last conversation, and do not infer it from what the operator is talking about. **Check the contract before you act on anything.** That same block carries `contract.version`. These procedures were written against contract **1**. If the number that comes back is **lower** — or the block is absent, which means a server older than contracts altogether — say so plainly and stop: name what you expected, what you found, and that the server needs updating before this skill can be trusted. Do not work around it; a procedure describing a door the server has not built fails at the point of use, with a refusal about something else entirely. A **higher** number is normal and needs no comment.
+**Say which project you are in, before anything else.** Kaveno holds several products, and every read comes back with the scope it was read in — `scope.product`, `scope.segment`, `scope.market`, `scope.language`, and the `available_products`, `available_segments` and `available_markets` lists it could have been narrowed to. Open with one of those reads — `sources` for the map, `brief` or `brief_readiness` for the brief — and state in one line what it says. Do not carry the project over from the last conversation, and do not infer it from what the operator is talking about. **Check the contract before you act on anything.** That same block carries `contract.version`. These procedures were written against contract **3**. If the number that comes back is **lower** — or the block is absent, which means a server older than contracts altogether — say so plainly and stop: name what you expected, what you found, and that the server needs updating before this skill can be trusted. Do not work around it; a procedure describing a door the server has not built fails at the point of use, with a refusal about something else entirely. A **higher** number is normal and needs no comment.
 
 **When the server says the choice is ambiguous, ask — never pick.** A call that reaches more than one product without saying which comes back refused, with the memberships named: *"you work on 2 products and this call did not say which."* That refusal is the question — put the names in front of the operator and let them answer. On a write it can also arrive per entry, as `segment_ambiguous`, `market_ambiguous` or `market_not_recorded`, naming the candidates the same way; it means the same thing. Choosing for them, or retrying with the first one, is how work lands on the wrong map.
 
@@ -53,6 +53,38 @@ Two standing rules with no exceptions. **Drafts are generated in-language, never
 **Refinement happens in conversation.** *"Shorter, and open with the practical thing"* is a turn against the draft you already produced; rewrite it here. Commit only the finished text through `select`. The tool never sees the instruction.
 
 **Saying nothing is worth publishing is a legitimate outcome, and you should say it unprompted when it is true.** Two days in five is normal and healthy. Record the rejections rather than leaving the items sitting proposed — **rejection is half the learning signal**, and a day recorded as "nothing good enough" is data, while a day recorded as nothing at all looks like the operator stopped showing up. A no-post day should cost ninety seconds.
+
+## The hard bans — you are the only thing checking them
+
+**Read every ban the day hands you, before you draft, and do not draft against one.**
+`today` returns `bans` per item — each ban's text and the market scope it was recorded at,
+resolved up the tree so a worldwide ban reaches a story in one country. `select` returns
+`bans_in_force` with the decision, which is the record of what applied at the moment the
+angle was committed.
+
+**The server does not check them, and will not.** Deciding whether an angle violates
+*"never comment on a live planning dispute"* means reading free prose against a draft, and
+`kaveno_mcp` holds no model — that absence is a guarantee (`REQ-XC-NOSEND-001`'s import
+lint) rather than a gap waiting to be filled. `REQ-PUB-SELECT-004` records **which bans
+were in force**; it does not adjudicate them, and the requirement says so in as many
+words. So the check happens here or it does not happen.
+
+**This is a procedure, not an enforcement point, and the difference matters.** Nothing
+refuses you. A post that breaks a ban will be committed, recorded, and counted. What
+exists afterwards is the record of which bans applied, which is what makes the mistake
+findable later — it is not what prevents it.
+
+Three things follow:
+
+- **A ban blocks the angle, not the item.** Say which ban and which market's rules it came
+  from, and offer the next-best angle. The operator cannot argue with a rule they never
+  saw, and cannot argue with a rule whose reach they cannot see either.
+- **Never quietly produce the sanitised version.** A softened draft that avoids a ban
+  without naming it is the failure `REQ-PUB-SELECT-004` was originally written to refuse —
+  the operator gets a weaker post and no idea why.
+- **When you are unsure whether a ban applies, ask.** A ban you half-remember is worth one
+  question; the legal-opinion ban in particular is the one most likely to be tripped by a
+  genuinely good angle (see O1 below).
 
 ## Writing the post
 

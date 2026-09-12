@@ -13,7 +13,7 @@ here should be edited, since the next publish overwrites it.
 
 ```bash
 claude plugin marketplace add frankghe-org/kaveno-plugin
-claude plugin install kaveno@kaveno
+claude plugin install kaveno@kaveno-skills
 ```
 
 Then start a new Claude session. That is the whole install — no token to paste,
@@ -50,7 +50,7 @@ injects has expired or been withdrawn. Nothing on your machine can fix this and
 nothing on your machine caused it — tell whoever administers the server.
 
 **No `mcp__kaveno__*` tools in the session.** The session predates the install.
-Start a new one; `claude plugin details kaveno@kaveno` should list seven skills
+Start a new one; `claude plugin details kaveno@kaveno-skills` should list seven skills
 and one MCP server.
 
 **Claude answers, but with a bare error rather than a sentence.** The server is

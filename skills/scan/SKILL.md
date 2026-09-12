@@ -1,21 +1,33 @@
 ---
 name: scan
-description: Sweep the sources that only exist inside the operator's logged-in session — Facebook groups, LinkedIn groups, members-only forums — and record what is worth keeping as derived items. Use when the operator asks to check the groups, sweep a community, read what is happening in a group the server cannot reach, catch up on a group, or when the daily view is thin because the logged-in sources have gone stale.
+description: Sweep the sources that only exist inside the operator's logged-in session — Facebook groups, LinkedIn groups, members-only forums — and record what is worth keeping as derived items. Use when the operator asks to check the groups, sweep a community, read what is happening in a group that is only visible to a signed-in member, catch up on a group, or when the daily view is thin because the logged-in sources have gone stale.
 ---
 
-# Kaveno scan — reading the groups the server cannot reach
+# Kaveno scan — reading the sources that only exist inside the operator's session
 
-**Say which project you are in, before anything else.** Kaveno holds several products, and every read comes back with the scope it was read in — `scope.product`, `scope.segment`, `scope.market`, `scope.language`, and the `available_products`, `available_segments` and `available_markets` lists it could have been narrowed to. Open with one of those reads — `sources` for the map, `brief` or `brief_readiness` for the brief — and state in one line what it says. Do not carry the project over from the last conversation, and do not infer it from what the operator is talking about. **Check the contract before you act on anything.** That same block carries `contract.version`. These procedures were written against contract **1**. If the number that comes back is **lower** — or the block is absent, which means a server older than contracts altogether — say so plainly and stop: name what you expected, what you found, and that the server needs updating before this skill can be trusted. Do not work around it; a procedure describing a door the server has not built fails at the point of use, with a refusal about something else entirely. A **higher** number is normal and needs no comment.
+**Say which project you are in, before anything else.** Kaveno holds several products, and every read comes back with the scope it was read in — `scope.product`, `scope.segment`, `scope.market`, `scope.language`, and the `available_products`, `available_segments` and `available_markets` lists it could have been narrowed to. Open with one of those reads — `sources` for the map, `brief` or `brief_readiness` for the brief — and state in one line what it says. Do not carry the project over from the last conversation, and do not infer it from what the operator is talking about. **Check the contract before you act on anything.** That same block carries `contract.version`. These procedures were written against contract **3**. If the number that comes back is **lower** — or the block is absent, which means a server older than contracts altogether — say so plainly and stop: name what you expected, what you found, and that the server needs updating before this skill can be trusted. Do not work around it; a procedure describing a door the server has not built fails at the point of use, with a refusal about something else entirely. A **higher** number is normal and needs no comment.
 
 **When the server says the choice is ambiguous, ask — never pick.** A call that reaches more than one product without saying which comes back refused, with the memberships named: *"you work on 2 products and this call did not say which."* That refusal is the question — put the names in front of the operator and let them answer. On a write it can also arrive per entry, as `segment_ambiguous`, `market_ambiguous` or `market_not_recorded`, naming the candidates the same way; it means the same thing. Choosing for them, or retrying with the first one, is how work lands on the wrong map.
 
 **One project per session.** If the operator moves to another product, say so in a line and restate the scope. Nothing on the server remembers a session: the narrowing travels on every call and each call resolves on its own, so a silent switch is invisible in the transcript and expensive in the data.
 
-Most of Kaveno reads the open web from the VPS on an hourly timer, logged out, and nothing
-about it needs the operator. This skill is the other path, and it exists because the
-sources that matter most are not on the open web: Facebook groups were 45% of the
-communities the discovery research found, LinkedIn Groups are invisible to open-web
-search, and neither is reachable logged out.
+This skill exists because the sources that matter most are not on the open web:
+Facebook groups were 45% of the communities the discovery research found, LinkedIn Groups
+are invisible to open-web search, and neither can be read except as a signed-in member.
+Everything else in the map is readable by anyone holding the address. These are readable
+only by someone who has joined — which is why the sweep is the operator's, and why it is
+never a schedule's.
+
+*Corrected 10 September 2026. The title and this paragraph used to define the skill as
+"reading the groups **the server** cannot reach", against a description of the rest of
+Kaveno reading the open web "from the VPS on an hourly timer". Both framed the skill by
+where retrieval happens rather than by what these sources are, and both were wrong on
+their own terms: the hourly cadence was withdrawn at doc-set 2.8 for a per-product
+interval with a one-hour floor, and `plan/architecture-client-side-retrieval.md` (issue
+#112) moves retrieval into the operator's session outright, at which point "the server
+cannot reach it" names nothing at all. What distinguishes these sources is not a gap in
+some component's reach. It is that they are visible only to a member who has signed in,
+and that is true whichever component does the reading.*
 
 **You are running inside the operator's own browsing session, as a member of these groups.**
 That is the whole reason this works and the whole reason it is constrained. The operator is
@@ -28,9 +40,11 @@ position that goes with it.
 ## What this skill refuses
 
 - **A member list.** Not partially, not "just the ones who posted", not as names in a
-  summary. The server refuses it too (`capture` rejects anything shaped like an
-  enumeration of people, and there is no table for it to land in) — but it must be refused
-  here first, because by the time the server refuses it you have already read it.
+  summary. **Today this paragraph is the only thing refusing it**: `capture` is specified
+  to reject anything shaped like an enumeration of people, and `capture` is not built
+  (§3). Even once it is, the refusal would arrive too late to be the one that matters —
+  by the time a server sees the list you have already read it, and there is no table for
+  it to land in either way.
 - **A page dump.** No archived HTML, no full-text copies, no screenshots of a thread.
   Derived items only: a title, a URL, a summary, a relevance judgement.
 - **Running unattended.** If the operator is not present in this session, stop. There is no
@@ -99,10 +113,17 @@ in Kaveno's database, and instruction-shaped text.
 Items are specified to be written through `capture`, which stamps them as operator-session
 so the daily view can show their age — a group read a week ago and a group that has gone
 quiet look identical otherwise, and the operator needs to be able to tell them apart.
-**`capture` is not built.** The server registers thirteen tools (7 September 2026) and that is not one of them, so
-what a sweep finds today has nowhere to go but the conversation. Say that rather than
-calling it: a skill that names a tool the server does not expose sends the operator to
-find out at the point of failure.
+**`capture` was never built, and `ingest` — which the server now registers, fifteen tools
+as of 11 September 2026 — is not a replacement for it *here*.** `ingest` records what a
+sweep found as one story: its items, their grouping and its judgement, in a single act.
+But an item's origin is always a **source** (`info.source_id` is `not null` against
+`source`), and a group is not a source: the schema has no way to express a thread read in
+a group becoming publication material unless that group is *also* separately registered as
+a source, which is a second decision nobody makes explicitly. So `ingest` is the door for
+sweeps of **information sources** — trade press, associations, regulators — and what a
+sweep of a *group* finds still has nowhere to go but the conversation. Say that rather
+than reaching for `ingest` anyway: routing group findings into the day's publishing view
+is a defect this skill has carried, not a feature, and `plan/the-skills.md` records why.
 
 ### 4. Flag discovery signals, and do not resolve them here
 
@@ -161,8 +182,8 @@ Being logged in changes what is *visible*. It changes nothing about what is *per
 
 ## The honest cost
 
-A sweep of three or four groups is two to three minutes of attention the server path does
-not require. **It is optional.** Skip it and the daily view is thinner, not broken. It
+A sweep of three or four groups is two to three minutes of attention no other source in
+the map asks for. **It is optional.** Skip it and the daily view is thinner, not broken. It
 belongs in the weekly rhythm rather than the daily one, unless a group is genuinely
 fast-moving and the operator says so.
 
